@@ -1,0 +1,17 @@
+- hosts: all
+  remote_user: root
+  connection: ssh
+  #to gather facts we need to have python 
+  gather_facts: False
+  pre_tasks:
+    - name: install python2 for ansible
+      #raw: bash -c "test -e /usr/bin/python || (apt install -qqy python python-pip python3 python3-pip)"
+      raw: bash -c "test -e /usr/bin/python || (apt -y update && apt install -y python python-pip python3 python3-pip)"
+      changed_when: False
+
+    # action: setup will gather facts after python2 has been installed
+    - name: to gather facts
+      action: setup
+    
+  roles:
+      - apache

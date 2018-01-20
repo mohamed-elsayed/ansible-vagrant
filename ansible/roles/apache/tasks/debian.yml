@@ -1,0 +1,51 @@
+---
+- name: Install apache
+  apt: 
+    name: apache2 
+    state: latest
+
+- name: start apache
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: change hostname
+  hostname:
+    name: web01
+
+- name: add myself to /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127\.0\.0\.1[ \t]+ localhost'
+    line: '127.0.0.1 localhost web01 www.testsite.com'
+    state: present
+    backup: yes
+    backrefs: yes
+- name: create dir for logs in system
+  file:
+    path: "{{item.dest}}"
+    state: directory
+    owner: www-data
+    group: www-data
+  with_items:
+    - { dest: '/var/www/html/logs'}
+    - { dest: '/var/www/html/pub'}
+
+- name: copy configuration file
+  template:
+    src: site.conf
+    dest: /etc/apache2/sites-available/site.conf
+  notify: Reload_Apache2
+
+- name : create symlink for sites-enabled
+  file:
+   src: /etc/apache2/sites-available/site.conf 
+   dest: /etc/apache2/sites-enabled/site.conf
+   state: link
+  notify: Reload_Apache2
+- name : delete 00-default.conf default virtual host
+  file:
+   path: /etc/apache2/sites-enabled/000-default.conf
+   state: absent
+  notify: Reload_Apache2

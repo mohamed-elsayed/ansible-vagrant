@@ -1,0 +1,4 @@
+#!/bin/sh
+#we needed this sc
+apt update
+apt-get install python -y

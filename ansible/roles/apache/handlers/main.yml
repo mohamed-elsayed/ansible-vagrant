@@ -1,0 +1,18 @@
+- name: Start_Apache
+  service:
+   name: httpd
+   state: started
+   enabled: yes
+
+- name: Reload_Apache
+  service:
+   name: httpd
+   state: restarted
+- name: Reload_Apache2
+  service:
+    name: apache2
+    state: restarted
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted

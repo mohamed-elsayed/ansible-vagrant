@@ -1,0 +1,60 @@
+--- #this is the task file for redhat family
+- name: Install apache
+  yum: 
+    name: httpd 
+    state: latest
+
+- name: start apache
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: change hostname
+  hostname:
+    name: web01
+
+- name: add myself to /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127\.0\.0\.1[ \t]+ localhost'
+    line: '127.0.0.1 localhost web01 www.testsite.com'
+    state: present
+    backup: yes
+    backrefs: yes
+- name: create dir for logs in system
+  file:
+    path: "{{item.dest}}"
+    state: directory
+    owner: apache
+    group: apache
+  with_items:
+    - { dest: '/var/www/html/logs'}
+    - { dest: '/var/www/html/pub'}
+- name: install python for selinux
+  yum:
+   name: libselinux-python
+   state: latest
+
+- name: make selinux permissive
+  selinux: 
+    policy: targeted
+    state: permissive
+- name : add the apache to firewall
+  firewalld: 
+    service: https
+    permanent: true
+    state: enabled
+  notify: restart firewalld
+
+- name: copy configuration file
+  template:
+    src: site.conf #ansible always assume template is in templates dir
+    dest: /etc/httpd/conf.d/site.conf
+  notify: Reload_Apache
+
+- name : delete welcome.conf default virtual host
+  file:
+   dest: /etc/httpd/conf.d/welcome.conf
+   state: absent
+  notify: Reload_Apache

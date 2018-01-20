@@ -1,0 +1,22 @@
+---
+- name : create admin user 
+  user :
+    name: admin
+    password: '{{admin_password}}'
+    #groups: sudo
+    append: yes
+    shell: /bin/bash
+
+- name: add admin authorized key
+  authorized_key:
+     user: admin
+     key: '{{common_public_key}}'
+     state: present  
+#using import_ will cause the when condition to be applied to each task in the playbook
+#alternative solution is to use include_ the condition eill apply only to the include task
+#and not any tasks included in the file
+- import_tasks: redhat.yml
+  when: ansible_os_family|lower == 'redhat'
+
+- import_tasks: debian.yml
+  when: ansible_os_family|lower =='debian'

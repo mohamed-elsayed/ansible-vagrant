@@ -1,0 +1,9 @@
+domain: testsite.com
+document_root: /var/www/html/pub
+apache_port: 8080
+server_root: /var/www/html
+server_name: www.testsite.com
+error_log: logs/error_log
+custom_log: logs/access_log 
+common_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClCZsZIa5KqUrpCLj6qvfAELvKVOTdoIyZPV7pFPqmZRxblIVK8YLk0FDfZkSDMacsZnGqk3+oxWOmjhCbbOcyQ2rmIkRFvVXcQlYaU3WMtBj7xuCy0rrVNkxoiSbG8aTYz2RG1kkVH53/Y/qSPiocufLONxuoKjezFH+dcht5I+2ny1+xPIw2+Iui1J/EuClBOhuIGtw6ajiarhH1UwFRMoRGftx0KGExgTw2R4sY0ssN6HKhL6NG9ni4FDFvREV79rQP/tQWvos/c0DG1GJpDPJH1o7esr8gwDIH96AE3U3I8V0A9/rujrO9vvlaBgHzl83H18HJlOF71Jn6T1RZ root@brightskies
+admin_password: $6$NAdyY2EHLMP68RW$RC62apdTxA.GqZ3s3c45aL1rIe8Qq8YjJOHjRpqFc/4FlcG76E17vsvkFXx129jskxK.JQpTt4gg1GTRF.Abh0 #admin
